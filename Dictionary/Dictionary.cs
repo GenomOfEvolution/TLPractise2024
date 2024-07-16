@@ -6,7 +6,7 @@ const string commandTranslate = "translate";
 
 bool usingDictionary = true;
 Dictionary<string, string> wordsDictionary = new();
-LoadDictionaryFromFile( ref wordsDictionary );
+wordsDictionary = LoadDictionaryFromFile( filePath );
 
 Console.WriteLine( "Dictionary" );
 PrintCommands();
@@ -14,17 +14,17 @@ PrintCommands();
 while ( usingDictionary )
 {
     Console.Write( "Введите команду: " );
-    switch ( Console.ReadLine() )
+    switch ( Console.ReadLine().Trim().ToLower() )
     {
         case commandExit:
             Console.WriteLine( "Завершаем работу и сохраняем словарь..." );
             usingDictionary = false;
             break;
         case commandAddTranslation:
-            AddTranslation( ref wordsDictionary );
+            AddTranslation( wordsDictionary );
             break;
         case commandTranslate:
-            TryTranslate( ref wordsDictionary );
+            TryTranslate( wordsDictionary );
             break;
         default:
             Console.WriteLine( "Неизвестная команда!" );
@@ -34,8 +34,9 @@ while ( usingDictionary )
 }
 SaveDictionaryToFile( wordsDictionary );
 
-void LoadDictionaryFromFile( ref Dictionary<string, string> d )
+Dictionary<string, string> LoadDictionaryFromFile( string filePath )
 {
+    Dictionary<string, string> dictionary = new();
     try
     {
         StreamReader sr = new StreamReader( filePath );
@@ -45,7 +46,7 @@ void LoadDictionaryFromFile( ref Dictionary<string, string> d )
             string[] words = line.Split( wordDelimetr );
             if ( ( words[ 0 ] != null ) && ( words[ 1 ] != null ) )
             {
-                d.Add( words[ 0 ], words[ 1 ] );
+                dictionary.Add( words[ 0 ], words[ 1 ] );
             }
         }
         sr.Close();
@@ -54,6 +55,7 @@ void LoadDictionaryFromFile( ref Dictionary<string, string> d )
     {
         Console.WriteLine( $"Ошибка при работе с файлом: {e.Message}" );
     }
+    return dictionary;
 }
 
 static string GetNotEmptyString( string paramName )
@@ -68,14 +70,22 @@ static string GetNotEmptyString( string paramName )
     return str;
 }
 
-void AddTranslation( ref Dictionary<string, string> d )
+void AddTranslation( Dictionary<string, string> dictionary )
 {
     string word = GetNotEmptyString( "слово" );
-    string translation = GetNotEmptyString( "перевод слова" );
-    d.Add( word, translation );
+    if ( dictionary.ContainsKey( word ) )
+    {
+        Console.WriteLine( $"Упс! Слово \"{word}\" уже есть в словаре!" );
+        Console.WriteLine( $"Используйте команду \"{commandTranslate}\" чтобы увидеть его перевод" );
+    }
+    else
+    {
+        string translation = GetNotEmptyString( "перевод слова" );
+        dictionary.Add( word, translation );
+    }
 }
 
-void TryTranslate( ref Dictionary<string, string> d )
+void TryTranslate( Dictionary<string, string> d )
 {
     const string positiveAnser = "y";
     string word = GetNotEmptyString( "слово" );
