@@ -1,12 +1,7 @@
-﻿using System.Net;
-using System.Xml.Linq;
-using System.Xml.Schema;
-
-
-const string exitPhrase = "exit";
+﻿const string exitPhrase = "exit";
 var order = new UserOrder();
-
 PrintAppName();
+
 while ( true )
 {
     Console.WriteLine( "Заполните форму доставки" );
@@ -21,7 +16,8 @@ while ( true )
     }
     Console.WriteLine( "Хотите заказать что-то еще?" );
     Console.Write( $"Или введите \"{exitPhrase}\"  для выхода: " );
-    if ( Console.ReadLine() == exitPhrase )
+
+    if ( string.Equals( Console.ReadLine(), exitPhrase, StringComparison.OrdinalIgnoreCase ) )
     {
         Console.WriteLine( "До свидания!" );
         break;
@@ -44,22 +40,23 @@ static string GetNotEmptyString( string paramName )
     }
     return str;
 }
+
 static bool CheckOrderCorrectness( UserOrder order )
 {
     const string positiveAnswer = "да";
     Console.WriteLine( $"Здравствуйте, {order.name}, вы заказали {order.productCount} {order.product} на адрес {order.address}, все верно?" );
     Console.Write( $"Введите \"{positiveAnswer}\" для подтверждения: " );
 
-    return ( Console.ReadLine() == positiveAnswer );
+    return ( string.Equals( Console.ReadLine(), positiveAnswer, StringComparison.OrdinalIgnoreCase ) );
 }
 
-static decimal GetCorrectItemCount()
+static int GetCorrectItemCount()
 {
-    decimal count;
+    int count;
     Console.Write( "Введите количество товара: " );
-    while ( !decimal.TryParse( Console.ReadLine(), out count ) || !( count > 0 ) )
+    while ( !int.TryParse( Console.ReadLine(), out count ) || !( count > 0 ) )
     {
-        Console.WriteLine( "Кол-во товара должно быть положительным числом" );
+        Console.WriteLine( "Кол-во товара должно быть целым положительным числом" );
     }
 
     return count;
@@ -79,8 +76,9 @@ static void SuccesfullOrderMessage( UserOrder userOrder )
     var now = DateTime.Now;
     Console.WriteLine( $"{userOrder.name}! Ваш заказ {userOrder.product} в количестве {userOrder.productCount} оформлен! Ожидайте доставку по адресу {userOrder.address} к {now.AddDays( 3 ).ToString( "D" )}" );
 }
-struct UserOrder
+
+public struct UserOrder
 {
     public string name, address, product;
-    public decimal productCount;
+    public int productCount;
 }
