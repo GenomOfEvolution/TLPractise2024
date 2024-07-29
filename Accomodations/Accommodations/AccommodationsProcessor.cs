@@ -21,8 +21,8 @@ public static class AccommodationsProcessor
         Console.WriteLine("'search <StartDate> <EndDate> <CategoryName>' - to search bookings");
         Console.WriteLine("'exit' - to exit the application");
 
-        string input;
-        while ((input = Console.ReadLine()) != "exit")
+        string input; // fix: added Trim
+        while ((input = Console.ReadLine().Trim()) != "exit")
         {
             try
             {
@@ -49,21 +49,34 @@ public static class AccommodationsProcessor
                     return;
                 }
 
-                CurrencyDto currency = (CurrencyDto) Enum.Parse(typeof(CurrencyDto), parts[5], true);
+                CurrencyDto currency;
 
-                BookingDto bookingDto = new()
+                if (!Enum.TryParse(parts[5], true, out currency))
                 {
-                    UserId = int.Parse(parts[1]),
-                    Category = parts[2],
-                    StartDate = DateTime.Parse(parts[3]),
-                    EndDate = DateTime.Parse(parts[4]),
-                    Currency = currency,
-                };
+                    throw new ArgumentException("Unkown currency");
+                }
+                // fix: parse incorrect date input
+                try
+                {
+                    BookingDto bookingDto = new()
+                    {
+                        UserId = int.Parse(parts[1]),
+                        Category = parts[2],
+                        StartDate = DateTime.Parse(parts[3]),
+                        EndDate = DateTime.Parse(parts[4]),
+                        Currency = currency,
+                    };
 
-                BookCommand bookCommand = new(_bookingService, bookingDto);
-                bookCommand.Execute();
-                _executedCommands.Add(++s_commandIndex, bookCommand);
-                Console.WriteLine("Booking command run is successful.");
+                    BookCommand bookCommand = new(_bookingService, bookingDto);
+                    bookCommand.Execute();
+                    _executedCommands.Add(++s_commandIndex, bookCommand);
+                    Console.WriteLine("Booking command run is successful.");
+                }
+                catch (FormatException ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                }
+
                 break;
 
             case "cancel":
@@ -72,8 +85,13 @@ public static class AccommodationsProcessor
                     Console.WriteLine("Invalid number of arguments for canceling.");
                     return;
                 }
+                // fix: checking guid
+                Guid bookingId;
+                if (!Guid.TryParse(parts[1], out bookingId))
+                {
+                    throw new FormatException("Wrong guid format!");
+                }
 
-                Guid bookingId = Guid.Parse(parts[1]);
                 CancelBookingCommand cancelCommand = new(_bookingService, bookingId);
                 cancelCommand.Execute();
                 _executedCommands.Add(++s_commandIndex, cancelCommand);
@@ -81,19 +99,32 @@ public static class AccommodationsProcessor
                 break;
 
             case "undo":
-                _executedCommands[s_commandIndex].Undo();
-                _executedCommands.Remove(s_commandIndex);
-                s_commandIndex--;
-                Console.WriteLine("Last command undone.");
-
+                try // fix: check invalid or empty queue
+                {
+                    _executedCommands[s_commandIndex].Undo();
+                    _executedCommands.Remove(s_commandIndex);
+                    s_commandIndex--;
+                    Console.WriteLine("Last command undone.");
+                }
+                catch (KeyNotFoundException)
+                {
+                    Console.WriteLine("Nothing to undo!");
+                }
                 break;
+
             case "find":
                 if (parts.Length != 2)
                 {
                     Console.WriteLine("Invalid arguments for 'find'. Expected format: 'find <BookingId>'");
                     return;
                 }
-                Guid id = Guid.Parse(parts[1]);
+
+                Guid id;
+                if (!Guid.TryParse(parts[1], out id))
+                {
+                    throw new FormatException("Wrong guid format!");
+                }
+
                 FindBookingByIdCommand findCommand = new(_bookingService, id);
                 findCommand.Execute();
                 break;
@@ -104,8 +135,19 @@ public static class AccommodationsProcessor
                     Console.WriteLine("Invalid arguments for 'search'. Expected format: 'search <StartDate> <EndDate> <CategoryName>'");
                     return;
                 }
-                DateTime startDate = DateTime.Parse(parts[1]);
-                DateTime endDate = DateTime.Parse(parts[2]);
+                //fix: check date on correctness
+                DateTime startDate;
+                if (!DateTime.TryParse(parts[1], out startDate))
+                {
+                    throw new FormatException("Invalid start date!");
+                }
+
+                DateTime endDate;
+                if (!DateTime.TryParse(parts[2], out endDate))
+                {
+                    throw new FormatException("Invalid end date!");
+                }
+
                 string categoryName = parts[3];
                 SearchBookingsCommand searchCommand = new(_bookingService, startDate, endDate, categoryName);
                 searchCommand.Execute();

@@ -47,7 +47,7 @@ public class BookingService : IBookingService
 
         int days = (endDate - startDate).Days;
         decimal currencyRate = GetCurrencyRate(currency);
-        decimal totalCost = CalculateBookingCost(selectedCategory.BaseRate, days, userId, currencyRate);
+        decimal totalCost = CalculateBookingCost(selectedCategory.BaseRate, days, currencyRate);
 
         Booking? booking = new()
         {
@@ -82,10 +82,16 @@ public class BookingService : IBookingService
         Console.WriteLine($"Refund of {booking.Cost} {booking.Currency}");
         _bookings.Remove(booking);
         RoomCategory? category = _categories.FirstOrDefault(c => c.Name == booking.RoomCategory.Name);
+
+        if (category == null) // fix: CS8602 - added if category will be null
+        {
+            throw new ArgumentException("Can't find Room Category!");
+        }
+
         category.AvailableRooms++;
     }
 
-    private static decimal CalculateDiscount(int userId)
+    private static decimal CalculateDiscount()    // fix: userId is not used in discount calc
     {
         return 0.1m;
     }
@@ -101,7 +107,7 @@ public class BookingService : IBookingService
 
         query = query.Where(b => b.StartDate >= startDate);
 
-        query = query.Where(b => b.EndDate < endDate);
+        query = query.Where(b => b.EndDate <= endDate); //fix: endDate must be included
 
         if (!string.IsNullOrEmpty(categoryName))
         {
@@ -117,8 +123,8 @@ public class BookingService : IBookingService
         {
             throw new ArgumentException("Start date cannot be earlier than now date");
         }
-
-        int daysBeforeArrival = (DateTime.Now - booking.StartDate).Days;
+        // fix: penality - positive number
+        int daysBeforeArrival = (booking.StartDate - DateTime.Now).Days;                
 
         return 5000.0m / daysBeforeArrival;
     }
@@ -137,10 +143,10 @@ public class BookingService : IBookingService
         return currencyRate;
     }
 
-    private static decimal CalculateBookingCost(decimal baseRate, int days, int userId, decimal currencyRate)
+    private static decimal CalculateBookingCost(decimal baseRate, int days, decimal currencyRate)
     {
         decimal cost = baseRate * days;
-        decimal totalCost = cost - cost * CalculateDiscount(userId) * currencyRate;
+        decimal totalCost = (cost - cost * CalculateDiscount()) * currencyRate; // fix: booking cost calc correctly
         return totalCost;
     }
 }
