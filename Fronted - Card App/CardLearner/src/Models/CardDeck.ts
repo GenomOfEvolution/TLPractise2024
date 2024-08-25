@@ -15,16 +15,20 @@ const CreateDeck = (name: string): CardDeck => {
 	};
 };
 
+const AddCard = (deck: CardDeck, newCard: Card) => {
+	if (!deck.cards.find((card) => card.id === newCard.id))
+		deck.cards.push(newCard);
+};
+
 const RemoveCardById = (deck: CardDeck, id: string): CardDeck => {
 	return { ...deck, cards: deck.cards.filter((card) => card.id !== id) };
 };
 
-const ShuffleDeck = (deck: CardDeck): CardDeck => {
+const ShuffleDeck = (deck: CardDeck) => {
 	for (let i = deck.cards.length - 1; i > 0; i--) {
 		const j = Math.floor(Math.random() * (i + 1));
 		[deck.cards[i], deck.cards[j]] = [deck.cards[j], deck.cards[i]];
 	}
-	return { ...deck, cards: deck.cards };
 };
 
 const EditCardById = (
@@ -42,4 +46,4 @@ const EditCardById = (
 	}
 };
 
-export { CreateDeck, RemoveCardById, ShuffleDeck, EditCardById };
+export { CreateDeck, RemoveCardById, ShuffleDeck, EditCardById, AddCard };
