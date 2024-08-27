@@ -1,21 +1,21 @@
 import { v4 as uuidv4 } from "uuid";
-import { Card, EditCard } from "./Card";
+import { TCard, EditCard } from "./Card";
 
 export type CardDeck = {
 	id: string;
 	name: string;
-	cards: Card[];
+	cards: TCard[];
 };
 
 const CreateDeck = (name: string): CardDeck => {
 	return {
 		id: uuidv4(),
 		name: name,
-		cards: new Array<Card>(),
+		cards: new Array<TCard>(),
 	};
 };
 
-const AddCard = (deck: CardDeck, newCard: Card) => {
+const AddCard = (deck: CardDeck, newCard: TCard) => {
 	if (!deck.cards.find((card) => card.id === newCard.id))
 		deck.cards.push(newCard);
 };

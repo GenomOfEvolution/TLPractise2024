@@ -1,12 +1,12 @@
 import { v4 as uuidv4 } from "uuid";
 
-export type Card = {
+export type TCard = {
 	id: string;
 	frontSide: string;
 	backSide: string;
 };
 
-const CreateCard = (frontSide: string, backSide: string): Card => {
+const CreateCard = (frontSide: string, backSide: string): TCard => {
 	return {
 		id: uuidv4(),
 		frontSide: frontSide,
@@ -14,7 +14,7 @@ const CreateCard = (frontSide: string, backSide: string): Card => {
 	};
 };
 
-const EditCard = (card: Card, newFront: string, newBack: string) => {
+const EditCard = (card: TCard, newFront: string, newBack: string) => {
 	card.backSide = newBack;
 	card.frontSide = newFront;
 };

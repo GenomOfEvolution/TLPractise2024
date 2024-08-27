@@ -1,14 +1,14 @@
-import { Card, CreateCard } from "./Card";
+import { TCard, CreateCard } from "./Card";
 import { RemoveTopCard, MoveCardBottom } from "./LearningProcessor";
 
 describe("Learning Processor", () => {
-	const cards: Card[] = [];
+	const cards: TCard[] = [];
 	cards.push(CreateCard("кружка", "mug"));
 	cards.push(CreateCard("чашка", "cup"));
 	cards.push(CreateCard("кот", "cat"));
 
 	it(`Moves top card to bottom of array`, () => {
-		const expectedCards: Card[] = [
+		const expectedCards: TCard[] = [
 			{
 				id: cards[1].id,
 				frontSide: cards[1].frontSide,
@@ -31,7 +31,7 @@ describe("Learning Processor", () => {
 	});
 
 	it(`Deletes first card`, () => {
-		const expectedCards: Card[] = [
+		const expectedCards: TCard[] = [
 			{
 				id: cards[1].id,
 				frontSide: cards[1].frontSide,

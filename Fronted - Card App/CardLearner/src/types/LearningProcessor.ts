@@ -1,14 +1,14 @@
-import { Card } from "./Card";
+import { TCard } from "./Card";
 
 export type LearningProcessor = {
-	ulearnedCards: Card[];
+	ulearnedCards: TCard[];
 };
 
-const RemoveTopCard = (cards: Card[]) => {
+const RemoveTopCard = (cards: TCard[]) => {
 	cards.shift();
 };
 
-const MoveCardBottom = (cards: Card[]) => {
+const MoveCardBottom = (cards: TCard[]) => {
 	const firstCard = cards.shift();
 	if (firstCard !== undefined) {
 		cards.push(firstCard);

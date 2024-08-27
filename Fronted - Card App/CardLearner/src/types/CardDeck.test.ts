@@ -5,13 +5,13 @@ import {
 	EditCardById,
 	AddCard,
 } from "./CardDeck";
-import { Card, CreateCard } from "./Card";
+import { TCard, CreateCard } from "./Card";
 
 describe(`CardDeck`, () => {
 	const EmptyDeck: CardDeck = {
 		id: "1",
 		name: "empty",
-		cards: new Array<Card>(),
+		cards: new Array<TCard>(),
 	};
 
 	it(`Creates card deck and returns it`, () => {
@@ -21,7 +21,7 @@ describe(`CardDeck`, () => {
 	});
 
 	it(`Adds card with unique id's only`, () => {
-		const coolCard: Card = CreateCard("чашка", "cup");
+		const coolCard: TCard = CreateCard("чашка", "cup");
 		const coolDeck: CardDeck = CreateDeck("deck");
 		AddCard(coolDeck, coolCard);
 		AddCard(coolDeck, coolCard);
@@ -29,11 +29,11 @@ describe(`CardDeck`, () => {
 	});
 
 	it(`Adds new Cards to deck`, () => {
-		const firstCard: Card = CreateCard("чашка", "cup");
+		const firstCard: TCard = CreateCard("чашка", "cup");
 		AddCard(EmptyDeck, firstCard);
 		expect(EmptyDeck.cards).toEqual([firstCard]);
 
-		const secondCard: Card = CreateCard("чашка", "mug");
+		const secondCard: TCard = CreateCard("чашка", "mug");
 		AddCard(EmptyDeck, secondCard);
 		expect(EmptyDeck.cards).toEqual([firstCard, secondCard]);
 	});
@@ -55,7 +55,7 @@ describe(`CardDeck`, () => {
 			"чашка",
 			"cup",
 		);
-		const expectedCard: Card = {
+		const expectedCard: TCard = {
 			id: edited.cards[0].id,
 			frontSide: "чашка",
 			backSide: "cup",
