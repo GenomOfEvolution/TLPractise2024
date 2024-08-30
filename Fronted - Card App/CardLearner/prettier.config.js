@@ -1,9 +1,5 @@
 export default {
-  printWidth: 80,
-  useTabs: true,
-  tabWidth: 4,
-  semi: true,
-  singleQuote: false,
-  jsxSingleQuote: false,
-  arrowParens: "always",
+	printWidth: 120,
+	useTabs: true,
+	tabWidth: 4,
 };

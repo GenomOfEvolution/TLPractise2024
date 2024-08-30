@@ -4,17 +4,24 @@ export type Application = {
 	decks: CardDeck[];
 };
 
-const CreateApp = (): Application => {
-	return { decks: new Array<CardDeck>() };
+const createApp = (): Application => ({
+	decks: [],
+});
+
+const addDeck = (app: Application, newDeck: CardDeck): Application => {
+	if (!app.decks.find((deck) => deck.id === newDeck.id)) {
+		return {
+			...app,
+			decks: app.decks.concat(newDeck),
+		};
+	}
+	return {
+		...app,
+	};
 };
 
-const AddDeck = (app: Application, newDeck: CardDeck) => {
-	if (!app.decks.find((deck) => deck.id === newDeck.id))
-		app.decks.push(newDeck);
-};
-
-const ReomveDeckById = (app: Application, id: string): Application => {
+const removeDeckById = (app: Application, id: string): Application => {
 	return { ...app, decks: app.decks.filter((deck) => deck.id !== id) };
 };
 
-export { AddDeck, ReomveDeckById, CreateApp };
+export { addDeck, removeDeckById, createApp };

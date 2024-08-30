@@ -1,22 +1,31 @@
-import { Application, AddDeck, ReomveDeckById, CreateApp } from "./Application";
-import { CardDeck, CreateDeck } from "./CardDeck";
+import { Application, addDeck, removeDeckById, createApp } from "./Application";
+import { CardDeck, createDeck } from "./CardDeck";
 
-describe(`Application`, () => {
-	const app: Application = CreateApp();
+describe("Application", () => {
+	const app: Application = createApp();
+	const deck: CardDeck = createDeck("cool deck");
 
-	it(`Adds new deck to app`, () => {
-		const deck: CardDeck = CreateDeck("deck");
-		AddDeck(app, deck);
-		expect(app.decks).toEqual([deck]);
+	describe("Adds decks to app", () => {
+		it("adds deck and returns app", () => {
+			expect(addDeck(app, deck)).toEqual({ decks: [deck] });
+		});
 
-		AddDeck(app, deck);
-		expect(app.decks).toEqual([deck]);
+		it("does not add deck with same id", () => {
+			const newApp: Application = addDeck(app, deck);
+			expect(addDeck(newApp, deck)).toEqual({ decks: [deck] });
+		});
 	});
 
-	it(`Removes deck by id`, () => {
-		const newApp: Application = CreateApp();
-		AddDeck(newApp, CreateDeck("new deck"));
+	describe("Removes deck by id", () => {
+		it("removes deck by id and returns app", () => {
+			const newApp: Application = addDeck(app, deck);
+			expect(removeDeckById(newApp, deck.id)).toEqual({ decks: [] });
+		});
 
-		expect(ReomveDeckById(newApp, newApp.decks[0].id).decks).toEqual([]);
+		it("removes deck with no such id", () => {
+			const newApp: Application = addDeck(app, deck);
+			expect(removeDeckById(newApp, "2281337")).toEqual(newApp);
+			expect(removeDeckById(app, deck.id)).toEqual(app);
+		});
 	});
 });
