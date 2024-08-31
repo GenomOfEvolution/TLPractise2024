@@ -2,12 +2,20 @@ import React from "react";
 import { CardDeck } from "../types/CardDeck";
 import icon_pen from "../assets/icon-pen.svg";
 import icon_trashcan from "../assets/icon-trashcan.svg";
+<<<<<<< Updated upstream
+=======
+import { Navigate, useNavigate } from "react-router-dom";
+>>>>>>> Stashed changes
 
 type DeckProps = {
 	deck: CardDeck;
 };
 
 export const Deck: React.FC<DeckProps> = ({ deck: CardDeck }) => {
+<<<<<<< Updated upstream
+=======
+	const navigate = useNavigate();
+>>>>>>> Stashed changes
 	return (
 		<>
 			<div
@@ -20,7 +28,11 @@ export const Deck: React.FC<DeckProps> = ({ deck: CardDeck }) => {
 					<div className="deck__panel">
 						<img
 							onClick={(event) => {
+<<<<<<< Updated upstream
 								console.log("editing deck");
+=======
+								navigate("/editCardDeck");
+>>>>>>> Stashed changes
 								event.stopPropagation();
 							}}
 							className="deck__panel_item"
