@@ -1,0 +1,67 @@
+@use "baseStyles" as *;
+
+/* Deck */
+@mixin deckBase {
+    @include theme($bgElemDeafult, $borderElemLight, solid, $borderRadiusElem);
+  
+    max-width: 350px;
+    min-width: 350px;
+    height: 250px;
+  }
+  
+  .deck {
+    @include deckBase;
+  
+    display: flex;
+    flex-wrap: wrap;
+  
+    align-content: space-between;
+    padding: 5%;
+  
+    opacity: 0.999;
+    position: relative;
+  }
+  
+  @mixin deckShadow($offset, $opacity, $z) {
+    @include deckBase;
+  
+    opacity: $opacity;
+    z-index: $z;
+  
+    top: $offset;
+    left: $offset;
+  
+    position: absolute;
+  }
+  
+  .deck__first-shadow {
+    @include deckShadow(-4%, 0.75, -1);
+  }
+  
+  .deck__last-shadow {
+    @include deckShadow(-8%, 0.5, -2);
+  }
+  
+  .deck__name {
+    @include deckText;
+  
+    display: flex;
+  
+    width: 70%;
+    height: 40%;
+  }
+  
+  .deck__panel {
+    display: flex;
+    width: 100%;
+  
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  
+  .deck__panel_item {
+    display: flex;
+  
+    margin: 1%;
+    cursor: pointer;
+  }
