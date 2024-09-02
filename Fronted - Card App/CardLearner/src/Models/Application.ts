@@ -11,8 +11,7 @@ const createApp = (): Application => ({
 const addDeck = (app: Application, newDeck: CardDeck): Application => {
 	if (!app.decks.find((deck) => deck.id === newDeck.id)) {
 		return {
-			...app,
-			decks: app.decks.concat(newDeck),
+			decks: [...app.decks, newDeck],
 		};
 	}
 	return {
@@ -21,7 +20,12 @@ const addDeck = (app: Application, newDeck: CardDeck): Application => {
 };
 
 const removeDeckById = (app: Application, id: string): Application => {
-	return { ...app, decks: app.decks.filter((deck) => deck.id !== id) };
+	return { decks: app.decks.filter((deck) => deck.id !== id) };
 };
 
-export { addDeck, removeDeckById, createApp };
+const getDeckById = (app: Application, id: string): CardDeck => {
+	const deck = app.decks.filter((deck) => deck.id === id);
+	return deck[0];
+};
+
+export { addDeck, removeDeckById, createApp, getDeckById };

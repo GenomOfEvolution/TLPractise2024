@@ -1,4 +1,3 @@
-import React from "react";
 import icon_cross from "../assets/icon-cross.svg";
 
 export const CardFactory = () => {

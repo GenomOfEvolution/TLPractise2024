@@ -1,14 +1,9 @@
+import { useLocation, useNavigate } from "react-router-dom";
 import { CardFactory } from "../Components/CardFactory";
-import { TCard } from "../types/Card";
-import { CardDeck } from "../types/CardDeck";
 
-type editorMenuProps = {
-	addCardInDeck: (deck: CardDeck, newCard: TCard) => void;
-	deleteCardInDeck: (deck: CardDeck, idNewCard: string) => void;
-	deck: CardDeck;
-};
-
-export const EditorMenu = (props: editorMenuProps) => {
+export const EditorMenu = () => {
+	const navigator = useNavigate();
+	const location = useLocation();
 	return (
 		<>
 			<div className="editor-menu">

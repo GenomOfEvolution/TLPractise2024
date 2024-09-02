@@ -76,20 +76,6 @@ describe("CardDeck", () => {
 			jest.spyOn(global.Math, "random").mockReturnValue(0.123456789);
 		});
 
-<<<<<<< Updated upstream:Fronted - Card App/CardLearner/src/Models/CardDeck.test.ts
-		const edited: CardDeck = EditCardById(
-			deck,
-			deck.cards[0].id,
-			"чашка",
-			"cup",
-		);
-		const expectedCard: Card = {
-			id: edited.cards[0].id,
-			frontSide: "чашка",
-			backSide: "cup",
-		};
-		expect(edited.cards).toEqual([expectedCard]);
-=======
 		afterEach(() => {
 			jest.spyOn(global.Math, "random").mockRestore();
 		});
@@ -108,6 +94,5 @@ describe("CardDeck", () => {
 			const shuffled: CardDeck = shuffleDeck(newDeck);
 			expect(shuffled.cards).not.toEqual(newDeck.cards);
 		});
->>>>>>> Stashed changes:Fronted - Card App/CardLearner/src/types/CardDeck.test.ts
 	});
 });

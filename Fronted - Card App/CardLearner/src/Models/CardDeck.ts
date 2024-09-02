@@ -17,7 +17,7 @@ const addCard = (deck: CardDeck, newCard: Card): CardDeck => {
 	if (!deck.cards.find((card) => card.id === newCard.id)) {
 		return {
 			...deck,
-			cards: deck.cards.concat(newCard),
+			cards: [...deck.cards, newCard],
 		};
 	}
 	return {
@@ -36,12 +36,7 @@ const shuffleDeck = (deck: CardDeck): CardDeck => {
 	};
 };
 
-const editCardById = (
-	deck: CardDeck,
-	id: string,
-	newFront: string,
-	newBack: string,
-): CardDeck => {
+const editCardById = (deck: CardDeck, id: string, newFront: string, newBack: string): CardDeck => {
 	const index = deck.cards.findIndex((card) => card.id === id);
 	if (index !== -1) {
 		return {

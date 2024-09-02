@@ -1,28 +1,15 @@
 import React from "react";
 import icon_cross from "../assets/icon-cross.svg";
-<<<<<<< Updated upstream
+import { useLearnStore } from "../storage/useLearnStore";
 
 export const DeckFactory = () => {
-=======
-import { CardDeck, CreateDeck } from "../types/CardDeck";
-
-type deckFactoryProps = {
-	addDeckInStore: (newDeck: CardDeck) => void;
-};
-
-export const DeckFactory = (props: deckFactoryProps) => {
-	const emptyDeck = CreateDeck("new deck");
->>>>>>> Stashed changes
+	const { addNewDeck } = useLearnStore();
 	return (
 		<>
 			<div
 				className="deck-wrapper"
 				onClick={() => {
-<<<<<<< Updated upstream
-					console.log("creating deck");
-=======
-					props.addDeckInStore(emptyDeck);
->>>>>>> Stashed changes
+					addNewDeck("new deck");
 				}}
 			>
 				<div className="factory">
