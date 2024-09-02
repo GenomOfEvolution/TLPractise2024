@@ -1,0 +1,127 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Wrappers */
+@mixin main-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  width: 100%;
+  height: 100%;
+}
+
+.main-menu {
+  @include main-wrapper;
+  padding-top: 1%;
+}
+
+.editor-menu {
+  @include main-wrapper;
+  padding: 0 10% 0 10%;
+}
+
+$bgElemDeafult: #E9ECFF;
+$borderElemDefault: #202981;
+$borderElemLight: #939BD2;
+$borderElemWidth: 4px;
+$borderRadiusElem: 30px;
+
+.deck-wrapper {
+  display: flex;
+
+  cursor: pointer;
+  border-radius: $borderRadiusElem;
+
+  max-width: 350px;
+  min-width: 350px;
+  height: 250px;
+  flex: 25%;
+  margin: 2%;
+
+  position: relative;
+}
+
+.card-wrapper {
+  display: flex;
+
+  width: 100%;
+  min-height: 165px;
+
+  margin-bottom: 1%;
+  align-items: center;
+}
+
+
+/*Theme and fonts */
+@mixin theme($bgColor, $borderColor, $borderStyle, $borderRadius) {
+  background-color: $bgColor;
+
+  border: $borderElemWidth;
+  border-color: $borderColor;
+  border-radius: $borderRadius;
+  border-style: $borderStyle;
+}
+
+@mixin cardLabelText {
+  font-family: "Inter", sans-serif;
+  color: black;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+@mixin deckText {
+  color: #4C58A6;
+  font-family: 'Oxygen', sans-serif;
+  font-size: 35px;
+  font-weight: bold;
+  text-align: left;
+}
+
+@mixin cardInputText {
+  color: #4C58A6;
+  font-size: 35px;
+  font-weight: bold;
+  font-family: 'Oxygen', sans-serif;
+}
+
+@mixin fontGood {
+  color: #0C9519;
+  font-family: "Inter", sans-serif;
+  font-weight: bold;
+}
+
+@mixin fontBad {
+  color: #E81F1F;
+  font-family: "Inter", sans-serif;
+  font-weight: bold;
+}
+
+/* factory */
+@mixin factoryBase {
+  @include theme($bgElemDeafult, $borderElemDefault, dashed, $borderRadiusElem);
+
+  cursor: pointer;
+  border-radius: $borderRadiusElem;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.factory {
+  @include factoryBase;
+}
+
+.factory__item {
+  display: flex;
+  
+  max-width: 122px;
+  max-height: 122px;
+}
